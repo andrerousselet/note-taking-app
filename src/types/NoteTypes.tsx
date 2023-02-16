@@ -12,3 +12,13 @@ export type NoteData = {
 export type Note = NoteData & {
   id: string,
 }
+
+export type RawNote = {
+  id: string,
+}
+
+export type RawNoteData = {
+  title: string,
+  markdown: string,
+  tagIds: string[],
+}
