@@ -13,7 +13,7 @@ export type Note = NoteData & {
   id: string,
 }
 
-export type RawNote = {
+export type RawNote = RawNoteData & {
   id: string,
 }
 
