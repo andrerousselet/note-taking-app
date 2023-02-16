@@ -2,11 +2,11 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { useMemo } from "react";
 import { Container } from "react-bootstrap"
 import { Navigate, Route, Routes } from "react-router-dom"
-import NewNote from "./components/NewNote"
+import NewNote from "./pages/NewNote"
 import useLocalStorage from "./hooks/useLocalStorage";
 import { NoteData, RawNote, Tag } from "./types/NoteTypes";
 import { v4 as uuidv4 } from "uuid";
-import NoteList from "./components/NoteList";
+import NoteList from "./pages/NoteList";
 
 function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
