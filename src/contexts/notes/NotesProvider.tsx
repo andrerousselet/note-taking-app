@@ -10,17 +10,17 @@ type NotesProviderProps = {
 function NotesProvider({ children }: NotesProviderProps) {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
 
-  const onCreateNote = ({ tags, ...data }: NoteData) => {
+  const onCreateNote = ({ noteTags, ...data }: NoteData) => {
     setNotes(prevNotes => ([
       ...prevNotes,
-      { ...data, id: uuidv4(), tagIds: tags.map(tag => tag.id) }
+      { ...data, id: uuidv4(), tagIds: noteTags.map(tag => tag.id) }
     ]));
   };
 
-  const onUpdateNote = (id: string, { tags, ...data }: NoteData) => {
+  const onUpdateNote = (id: string, { noteTags, ...data }: NoteData) => {
     setNotes(prevNotes => {
       return prevNotes.map(note => {
-        if (note.id === id) return { ...note, ...data, tagIds: tags.map(tag => tag.id) };
+        if (note.id === id) return { ...note, ...data, tagIds: noteTags.map(tag => tag.id) };
         return note;
       });
     });
