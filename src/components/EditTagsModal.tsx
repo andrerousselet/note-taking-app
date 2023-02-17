@@ -1,21 +1,14 @@
 import { Button, Col, Form, Modal, Row, Stack } from "react-bootstrap";
-import { Tag } from "../types/NoteTypes";
+import useTags from "../contexts/tags/useTags";
 
 type EditTagsModalProps = {
-  availableTags: Tag[],
   show: boolean,
   handleClose: () => void,
-  onUpdateTag: (id: string, label: string) => void,
-  onDeleteTag: (id: string) => void,
 }
 
-function EditTagsModal({
-  availableTags,
-  show,
-  handleClose,
-  onUpdateTag,
-  onDeleteTag
-}: EditTagsModalProps) {
+function EditTagsModal({ show, handleClose }: EditTagsModalProps) {
+  const { tags, onUpdateTag, onDeleteTag } = useTags();
+
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
@@ -24,7 +17,7 @@ function EditTagsModal({
       <Modal.Body>
         <Form>
           <Stack gap={2}>
-            {availableTags.map(tag => (
+            {tags.map(tag => (
               <Row key={tag.id} >
                 <Col>
                   <Form.Control
@@ -50,4 +43,4 @@ function EditTagsModal({
   )
 }
 
-export default EditTagsModal
+export default EditTagsModal;
