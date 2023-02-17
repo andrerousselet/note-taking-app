@@ -4,27 +4,20 @@ import { Container } from "react-bootstrap"
 import { Navigate, Route, Routes } from "react-router-dom"
 import NewNote from "./pages/NewNote"
 import useLocalStorage from "./hooks/useLocalStorage";
-import { NoteData, RawNote, Tag } from "./types/NoteTypes";
-import { v4 as uuidv4 } from "uuid";
+import { NoteData, Tag } from "./types/NoteTypes";
 import NoteList from "./pages/NoteList";
 import NoteLayout from "./components/NoteLayout";
 import Note from "./pages/Note";
 import EditNote from "./pages/EditNote";
+import useNotes from "./contexts/notes/useNotes";
 
 function App() {
-  const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
+  const { notes } = useNotes();
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
 
   const notesWithTags = useMemo(() => {
     return notes.map(note => ({ ...note, tags: tags.filter(tag => note.tagIds.includes(tag.id)) }));
   }, [notes, tags]);
-
-  const onCreateNote = ({ tags, ...data }: NoteData) => {
-    setNotes(prevNotes => ([
-      ...prevNotes,
-      { ...data, id: uuidv4(), tagIds: tags.map(tag => tag.id) }
-    ]));
-  };
 
   const onUpdateNote = (id: string, { tags, ...data }: NoteData) => {
     setNotes(prevNotes => {
@@ -78,7 +71,6 @@ function App() {
           path="/new"
           element={
             <NewNote
-              onSubmit={onCreateNote}
               onAddTag={onAddTag}
               availableTags={tags}
             />
