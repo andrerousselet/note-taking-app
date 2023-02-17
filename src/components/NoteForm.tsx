@@ -3,15 +3,16 @@ import { Button, Col, Form, Row, Stack } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import CreatableReactSelect from "react-select/creatable";
 import { NoteData, Tag } from "../types/NoteTypes";
-import { v4 as uuidv4 } from "uuid"
-import useNotes from "../contexts/notes/useNotes";
+import { v4 as uuidv4 } from "uuid";
 
 type NoteFormProps = Partial<NoteData> & {
+  onSubmit: (data: NoteData) => void,
   onAddTag: (tag: Tag) => void,
   availableTags: Tag[],
 }
 
 function NoteForm({
+  onSubmit,
   onAddTag,
   availableTags,
   title = "",
@@ -21,12 +22,11 @@ function NoteForm({
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<Tag[]>(tags);
-  const { onCreateNote } = useNotes();
   const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    onCreateNote({
+    onSubmit({
       title: titleRef.current!.value,
       markdown: markdownRef.current!.value,
       tags: selectedTags,
