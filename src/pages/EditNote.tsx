@@ -1,15 +1,10 @@
-import { NoteData, Tag } from "../types/NoteTypes";
 import NoteForm from "../components/NoteForm";
 import useNote from "../hooks/useNote";
+import useNotes from "../contexts/notes/useNotes";
 
-type EditNoteProps = {
-  onSubmit: (id: string, data: NoteData) => void,
-  onAddTag: (tag: Tag) => void,
-  availableTags: Tag[],
-}
-
-function EditNote({ onSubmit, onAddTag, availableTags }: EditNoteProps) {
+function EditNote() {
   const note = useNote();
+  const { onUpdateNote } = useNotes();
 
   return (
     <>
@@ -17,13 +12,11 @@ function EditNote({ onSubmit, onAddTag, availableTags }: EditNoteProps) {
       <NoteForm
         title={note.title}
         markdown={note.markdown}
-        tags={note.tags}
-        onSubmit={data => onSubmit(note.id, data)}
-        onAddTag={onAddTag}
-        availableTags={availableTags}
+        noteTags={note.noteTags}
+        onSubmit={data => onUpdateNote(note.id, data)}
       />
     </>
   )
 }
 
-export default EditNote
+export default EditNote;

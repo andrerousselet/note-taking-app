@@ -5,23 +5,22 @@ import ReactSelect from "react-select";
 import { SimplifiedNote, Tag } from "../types/NoteTypes";
 import NoteCard from "../components/NoteCard";
 import EditTagsModal from "../components/EditTagsModal";
+import useTags from "../contexts/tags/useTags";
 
 type NoteListProps = {
-  notes: SimplifiedNote[]
-  availableTags: Tag[],
-  onUpdateTag: (id: string, label: string) => void,
-  onDeleteTag: (id: string) => void,
+  notes: SimplifiedNote[],
 }
 
-function NoteList({ notes, availableTags, onUpdateTag, onDeleteTag }: NoteListProps) {
+function NoteList({ notes }: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState<string>("");
   const [editTagsModalisOpen, setEditTagsModalisOpen] = useState(false)
+  const { tags } = useTags();
 
   const filteredNotes = useMemo(() => {
     return notes.filter(note => {
       return (title === "" || note.title.toLowerCase().includes(title.toLowerCase()))
-        && (selectedTags.length === 0 || selectedTags.every(tag => note.tags.some(noteTag => noteTag.id === tag.id)))
+        && (selectedTags.length === 0 || selectedTags.every(tag => note.noteTags.some(noteTag => noteTag.id === tag.id)))
     });
   }, [title, selectedTags, notes])
 
@@ -62,7 +61,7 @@ function NoteList({ notes, availableTags, onUpdateTag, onDeleteTag }: NoteListPr
                 value={selectedTags.map(tag => {
                   return { label: tag.label, value: tag.id }
                 })}
-                options={availableTags.map(tag => {
+                options={tags.map(tag => {
                   return { label: tag.label, value: tag.id }
                 })}
                 onChange={(tags) => {
@@ -84,7 +83,7 @@ function NoteList({ notes, availableTags, onUpdateTag, onDeleteTag }: NoteListPr
             <NoteCard
               id={note.id}
               title={note.title}
-              tags={note.tags}
+              noteTags={note.noteTags}
             />
           </Col>
         ))}
@@ -92,9 +91,6 @@ function NoteList({ notes, availableTags, onUpdateTag, onDeleteTag }: NoteListPr
       <EditTagsModal
         show={editTagsModalisOpen}
         handleClose={() => setEditTagsModalisOpen(false)}
-        availableTags={availableTags}
-        onUpdateTag={onUpdateTag}
-        onDeleteTag={onDeleteTag}
       />
     </>
   )

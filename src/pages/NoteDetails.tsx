@@ -1,24 +1,22 @@
-import { Badge, Button, Col, Row, Stack } from "react-bootstrap"
-import { ReactMarkdown } from "react-markdown/lib/react-markdown"
-import { Link, useNavigate } from "react-router-dom"
-import useNote from "../hooks/useNote"
+import { Badge, Button, Col, Row, Stack } from "react-bootstrap";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { Link, useNavigate } from "react-router-dom";
+import useNotes from "../contexts/notes/useNotes";
+import useNote from "../hooks/useNote";
 
-type NoteProps = {
-  onDelete: (id: string) => void,
-}
-
-function Note({ onDelete }: NoteProps) {
-  const note = useNote()
-  const navigate = useNavigate()
+function NoteDetails() {
+  const note = useNote();
+  const { onDeleteNote } = useNotes();
+  const navigate = useNavigate();
 
   return (
     <>
       <Row className="align-items-center mb-4">
         <Col>
           <h1>{note.title}</h1>
-          {note.tags.length && (
+          {note.noteTags.length && (
             <Stack gap={1} direction="horizontal" className="flex-wrap">
-              {note.tags.map(tag => (
+              {note.noteTags.map(tag => (
                 <Badge key={tag.id} className="text-truncate">{tag.label}</Badge>
               ))}
             </Stack>
@@ -32,7 +30,7 @@ function Note({ onDelete }: NoteProps) {
             <Button
               variant="outline-danger"
               onClick={() => {
-                onDelete(note.id)
+                onDeleteNote(note.id)
                 navigate("/")
               }}
             >
@@ -49,4 +47,4 @@ function Note({ onDelete }: NoteProps) {
   )
 }
 
-export default Note
+export default NoteDetails;

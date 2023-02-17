@@ -1,23 +1,15 @@
-import { NoteData, Tag } from "../types/NoteTypes";
 import NoteForm from "../components/NoteForm";
+import useNotes from "../contexts/notes/useNotes";
 
-type NewNoteProps = {
-  onSubmit: (data: NoteData) => void,
-  onAddTag: (tag: Tag) => void,
-  availableTags: Tag[],
-}
+function NewNote() {
+  const { onCreateNote } = useNotes();
 
-function NewNote({ onSubmit, onAddTag, availableTags }: NewNoteProps) {
   return (
     <>
       <h1 className="mb-4">New Note</h1>
-      <NoteForm
-        onSubmit={onSubmit}
-        onAddTag={onAddTag}
-        availableTags={availableTags}
-      />
+      <NoteForm onSubmit={onCreateNote} />
     </>
   )
 }
 
-export default NewNote
+export default NewNote;
