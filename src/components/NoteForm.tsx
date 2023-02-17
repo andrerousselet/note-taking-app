@@ -4,32 +4,30 @@ import { Link, useNavigate } from "react-router-dom";
 import CreatableReactSelect from "react-select/creatable";
 import { NoteData, Tag } from "../types/NoteTypes";
 import { v4 as uuidv4 } from "uuid";
+import useTags from "../contexts/tags/useTags";
 
 type NoteFormProps = Partial<NoteData> & {
-  onSubmit: (data: NoteData) => void,
-  onAddTag: (tag: Tag) => void,
-  availableTags: Tag[],
+  onSubmit: (data: NoteData) => void
 }
 
 function NoteForm({
   onSubmit,
-  onAddTag,
-  availableTags,
   title = "",
   markdown = "",
-  tags = []
+  noteTags = []
 }: NoteFormProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
-  const [selectedTags, setSelectedTags] = useState<Tag[]>(tags);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>(noteTags);
   const navigate = useNavigate();
+  const { tags, onAddTag } = useTags();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onSubmit({
       title: titleRef.current!.value,
       markdown: markdownRef.current!.value,
-      tags: selectedTags,
+      noteTags: selectedTags,
     })
     navigate("..")
   }
@@ -56,7 +54,7 @@ function NoteForm({
                 value={selectedTags.map(tag => {
                   return { label: tag.label, value: tag.id }
                 })}
-                options={availableTags.map(tag => {
+                options={tags.map(tag => {
                   return { label: tag.label, value: tag.id }
                 })}
                 onChange={(tags) => {
@@ -86,4 +84,4 @@ function NoteForm({
   )
 }
 
-export default NoteForm
+export default NoteForm;
