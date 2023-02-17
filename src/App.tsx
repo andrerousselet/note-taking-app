@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap"
 import { Navigate, Route, Routes } from "react-router-dom"
 import NewNote from "./pages/NewNote"
 import useLocalStorage from "./hooks/useLocalStorage";
-import { NoteData, Tag } from "./types/NoteTypes";
+import { Tag } from "./types/NoteTypes";
 import NoteList from "./pages/NoteList";
 import NoteLayout from "./components/NoteLayout";
 import Note from "./pages/Note";
@@ -18,21 +18,6 @@ function App() {
   const notesWithTags = useMemo(() => {
     return notes.map(note => ({ ...note, tags: tags.filter(tag => note.tagIds.includes(tag.id)) }));
   }, [notes, tags]);
-
-  const onUpdateNote = (id: string, { tags, ...data }: NoteData) => {
-    setNotes(prevNotes => {
-      return prevNotes.map(note => {
-        if (note.id === id) return { ...note, ...data, tagIds: tags.map(tag => tag.id) };
-        return note;
-      });
-    });
-  };
-
-  const onDeleteNote = (id: string) => {
-    setNotes(prevNotes => {
-      return prevNotes.filter(note => note.id !== id);
-    });
-  };
 
   const onAddTag = (tag: Tag) => {
     setTags(prev => [...prev, tag]);
@@ -67,32 +52,10 @@ function App() {
             />
           }
         />
-        <Route
-          path="/new"
-          element={
-            <NewNote
-              onAddTag={onAddTag}
-              availableTags={tags}
-            />
-          }
-        />
+        <Route path="/new" element={<NewNote onAddTag={onAddTag} availableTags={tags} />} />
         <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
-          <Route
-            index
-            element={
-              <Note onDelete={onDeleteNote} />
-            }
-          />
-          <Route
-            path="edit"
-            element={
-              <EditNote
-                onSubmit={onUpdateNote}
-                onAddTag={onAddTag}
-                availableTags={tags}
-              />
-            }
-          />
+          <Route index element={<Note />} />
+          <Route path="edit" element={<EditNote onAddTag={onAddTag} availableTags={tags} />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
@@ -100,4 +63,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
