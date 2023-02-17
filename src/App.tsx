@@ -11,6 +11,9 @@ import NoteLayout from "./components/NoteLayout";
 import Note from "./pages/Note";
 import EditNote from "./pages/EditNote";
 
+// This is the no context version of the app,
+// where all the logic is placed here (App.tsx).
+
 function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
