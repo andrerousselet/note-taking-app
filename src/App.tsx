@@ -5,7 +5,7 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import NewNote from "./pages/NewNote"
 import NoteList from "./pages/NoteList";
 import NoteLayout from "./components/NoteLayout";
-import Note from "./pages/Note";
+import NoteDetails from "./pages/NoteDetails";
 import EditNote from "./pages/EditNote";
 import useNotes from "./contexts/notes/useNotes";
 import useTags from "./contexts/tags/useTags";
@@ -24,7 +24,7 @@ function App() {
         <Route path="/" element={<NoteList notes={notesWithTags} />} />
         <Route path="/new" element={<NewNote />} />
         <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
-          <Route index element={<Note />} />
+          <Route index element={<NoteDetails />} />
           <Route path="edit" element={<EditNote availableTags={tags} />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} />

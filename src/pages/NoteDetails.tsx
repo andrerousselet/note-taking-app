@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useNotes from "../contexts/notes/useNotes";
 import useNote from "../hooks/useNote";
 
-function Note() {
+function NoteDetails() {
   const note = useNote();
   const { onDeleteNote } = useNotes();
   const navigate = useNavigate();
@@ -14,9 +14,9 @@ function Note() {
       <Row className="align-items-center mb-4">
         <Col>
           <h1>{note.title}</h1>
-          {note.tags.length && (
+          {note.noteTags.length && (
             <Stack gap={1} direction="horizontal" className="flex-wrap">
-              {note.tags.map(tag => (
+              {note.noteTags.map(tag => (
                 <Badge key={tag.id} className="text-truncate">{tag.label}</Badge>
               ))}
             </Stack>
@@ -47,4 +47,4 @@ function Note() {
   )
 }
 
-export default Note;
+export default NoteDetails;
