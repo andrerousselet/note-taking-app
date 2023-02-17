@@ -7,11 +7,13 @@ import NoteCard from "../components/NoteCard";
 import EditTagsModal from "../components/EditTagsModal";
 
 type NoteListProps = {
-  availableTags: Tag[],
   notes: SimplifiedNote[]
+  availableTags: Tag[],
+  onUpdateTag: (id: string, label: string) => void,
+  onDeleteTag: (id: string) => void,
 }
 
-function NoteList({ availableTags, notes }: NoteListProps) {
+function NoteList({ notes, availableTags, onUpdateTag, onDeleteTag }: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState<string>("");
   const [editTagsModalisOpen, setEditTagsModalisOpen] = useState(false)
@@ -91,6 +93,8 @@ function NoteList({ availableTags, notes }: NoteListProps) {
         show={editTagsModalisOpen}
         handleClose={() => setEditTagsModalisOpen(false)}
         availableTags={availableTags}
+        onUpdateTag={onUpdateTag}
+        onDeleteTag={onDeleteTag}
       />
     </>
   )
